@@ -1,0 +1,16 @@
+{
+  "name": "chatshow-archiving",
+  "version": "0.0.1",
+  "description": "ChatShow Archiving Demo",
+  "main": "index.js",
+  "scripts": {
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "opentok": "2.2.5",
+    "express": "^3.5.0",
+    "ejs": "^0.8.6",
+    "react-tools": "0.13.3"
+  }
+}

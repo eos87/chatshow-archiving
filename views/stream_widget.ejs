@@ -1,0 +1,70 @@
+/** @jsx React.DOM */
+var Frame = React.createClass({
+    render: function() {
+        return <iframe />;
+    },
+    componentDidMount: function() {
+      this.renderFrameContents();
+    },
+    renderFrameContents: function() {
+      var doc = this.getDOMNode().contentWindow.document;
+
+      if(doc.readyState === 'complete') {
+        React.render(this.props.head, doc.head);
+        React.render(this.props.children, doc.body);
+      } else {
+        setTimeout(this.renderFrameContents, 0);
+      }
+    },
+    componentDidUpdate: function() {
+      this.renderFrameContents();
+    },
+    componentWillUnmount: function() {
+        React.unmountComponentAtNode(this.getDOMNode().contentWindow.document.body);
+    }
+});
+
+var EmbedableWidget = React.createClass({
+    getInitialState: function() {
+      return { show: false };
+    },
+    toggleState: function() {
+      this.setState({show: !this.state.show});
+    },
+    loadOpenTokSession: function () {
+      var doc = this.getDOMNode().contentWindow.document;
+      if(typeof OT !== 'undefined') {
+        var sessionId = "<%= sessionId %>";
+        var apiKey = "<%= apiKey %>";
+        var token = "<%= token %>";
+        var session = OT.initSession(sessionId);
+
+        session.connect(apiKey, token, function (err, info) {
+          if (err)
+            alert(err.message || err);
+        });
+
+        session.on('streamCreated', function (event) {
+          session.subscribe(event.stream, doc.querySelector('#subscribers'), {
+            insertMode: 'append'
+          });
+        });
+      } else {
+        setTimeout(this.loadOpenTokSession, 0);
+      }
+    },
+    componentDidMount: function() {
+      this.loadOpenTokSession();
+    },
+    render: function() {
+        return (
+            <Frame head={
+                <script id="opentok-js" src='https://static.opentok.com/webrtc/v2.2/js/opentok.min.js'></script>
+              }>
+              <div id='subscribers'></div>
+            </Frame>
+        );
+    }
+});
+
+React.render(<EmbedableWidget name="World" />, document.querySelector('#chat-show-embed'));

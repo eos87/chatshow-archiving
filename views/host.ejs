@@ -1,0 +1,33 @@
+<% include header %>
+
+  <div class="container pad-80">
+
+    <div class="body-content">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Host</h3>
+          <h4>sessionId: <%= sessionId %></h4>
+        </div>
+        <div class="panel-body">
+          <div id="subscribers"><div id="publisher"></div></div>
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-danger start">Start recording</button>
+          <button class="btn btn-success stop">Stop recording</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+    <script>
+        var sessionId = "<%= sessionId %>";
+        var apiKey = "<%= apiKey %>";
+        var token = "<%= token %>";
+    </script>
+    <script src="/js/host.js"></script>
+
+  </div>
+
+<% include footer %>

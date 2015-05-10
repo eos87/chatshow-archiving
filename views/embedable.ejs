@@ -1,0 +1,24 @@
+// include required scripts in the target document
+var requeriments = [
+  'http://<%= serverHost %>/stream_widget.js?ssid=<%= sessionId %>',
+  'https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react-with-addons.min.js'
+];
+
+(function() {
+  function async_load(){
+    requeriments.forEach(function(theScript){
+      var tag = document.createElement('script');
+      tag.type = 'text/javascript';
+      // tag.async = true;
+      tag.src = theScript;
+
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    });
+  }
+
+  if (window.attachEvent)
+    window.attachEvent('onload', async_load);
+  else
+    window.addEventListener('load', async_load, false);
+})();
