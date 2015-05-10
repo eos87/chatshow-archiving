@@ -13,6 +13,7 @@ if (!apiKey || !apiSecret) {
 
 // Initialize app and opentok
 var app = express();
+app.set('port', process.env.PORT || 8888);
 app.use(express.static(__dirname + '/public'));
 var opentok = new OpenTok(apiKey, apiSecret);
 
@@ -24,6 +25,7 @@ opentok.createSession({
 }, function (err, session) {
   if (err) throw err;
   app.set('sessionId', session.sessionId);
+  console.log('sessionID:', session.sessionId);
   init();
 });
 
@@ -160,7 +162,7 @@ app.get('/stream_widget.js', function (req, res) {
 
 // Start server
 function init() {
-  app.listen(3000, function () {
-    console.log('Starting server at http://127.0.0.1:3000/');
+  app.listen(app.get('port'), function () {
+    console.log('Starting server at http://127.0.0.1:8888/');
   });
 }
